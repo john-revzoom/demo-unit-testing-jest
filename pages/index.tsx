@@ -2,6 +2,9 @@ import Head from "next/head";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
+import DatePicker from "antd/lib/date-picker";
+import Checkbox from "antd/lib/checkbox";
+import Select from "antd/lib/select";
 import styles from "@/pages/index.module.css";
 
 export default function Home() {
@@ -17,11 +20,14 @@ export default function Home() {
       </Head>
 
       <div>
-        <Form onFinish={onFinish} initialValues={{
-          optionalText: 'testing'
-        }}>
-          <Form.Item name="optionalText" data-testid="optionalText">
-            <Input placeholder="Optional text" data-testid="optionalText"/>
+        <Form
+          onFinish={onFinish}
+          initialValues={{
+            optionalText: "test",
+          }}
+        >
+          <Form.Item name="optionalText">
+            <Input placeholder="Optional text" data-testid="optionalText" />
           </Form.Item>
 
           <Form.Item
@@ -29,11 +35,11 @@ export default function Home() {
             rules={[
               {
                 required: true,
-                message: "This input is required.",
+                message: "Required text must not be empty.",
               },
             ]}
           >
-            <Input placeholder="Required text"  data-testid="requiredText"/>
+            <Input placeholder="Required text" data-testid="requiredText" />
           </Form.Item>
 
           <Form.Item
@@ -41,11 +47,19 @@ export default function Home() {
             rules={[
               {
                 required: true,
-                message: "This input is required.",
+                message: "Required number must not be empty.",
+              },
+              {
+                pattern: new RegExp(/^\d{10}$/g),
+                message: "Input should only contain numbers",
+              },
+              {
+                max: 10,
+                message: "Only enter a maximum of 10 digits!",
               },
             ]}
           >
-            <Input placeholder="Required number"  data-testid="requiredNumber" />
+            <Input placeholder="Required number" data-testid="requiredNumber" />
           </Form.Item>
 
           <Form.Item
@@ -55,13 +69,49 @@ export default function Home() {
                 required: true,
                 message: "This input is required.",
               },
+              {
+                pattern: /\W|_/,
+                message: "Input should have at least one special character.",
+              },
             ]}
           >
-            <Input placeholder="Type at least one special char"  data-testid="requiredSpecial" />
+            <Input
+              placeholder="Type special characters"
+              data-testid="requiredSpecialCharacter"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="dateInput"
+            rules={[
+              {
+                required: true,
+                message: "Date is required.",
+              },
+            ]}
+          >
+            <DatePicker data-testid="dateInput" />
+          </Form.Item>
+
+          <Form.Item name="rememberMe" valuePropName="checked">
+            <Checkbox data-testid="rememberMe">Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item
+            name="selectInput"
+            rules={[{ required: true, message: "Please select demo" }]}
+          >
+            <Select placeholder="Select demo">
+              <Select.Option value="demo">Demo</Select.Option>
+            </Select>
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" data-testid="submitFormBtn">
+            <Button
+              type="primary"
+              htmlType="submit"
+              data-testid="submitFormBtn"
+            >
               Register
             </Button>
           </Form.Item>
