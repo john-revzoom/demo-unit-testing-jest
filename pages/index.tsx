@@ -93,10 +93,6 @@ export default function Home() {
             <DatePicker data-testid="dateInput" />
           </Form.Item>
 
-          <Form.Item name="rememberMe" valuePropName="checked">
-            <Checkbox data-testid="rememberMe">Remember me</Checkbox>
-          </Form.Item>
-
           <Form.Item
             name="selectInput"
             rules={[{ required: true, message: "Please select demo" }]}
@@ -104,6 +100,10 @@ export default function Home() {
             <Select placeholder="Select demo">
               <Select.Option value="demo">Demo</Select.Option>
             </Select>
+          </Form.Item>
+
+          <Form.Item name="rememberMe" valuePropName="checked">
+            <Checkbox data-testid="rememberMe">Remember me</Checkbox>
           </Form.Item>
 
           <Form.Item>

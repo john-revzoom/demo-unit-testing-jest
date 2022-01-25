@@ -87,17 +87,28 @@ describe("Home", () => {
     userEvent.type(date1Field, "1990-01-01");
   });
 
-  // it("should be able to display correct toggle state value", () => {
-  //   render(<Home />);
+  it("should be able to display correct toggle state value", async () => {
+    render(<Home />);
+    let checkbox = screen.getByTestId("rememberMe") as HTMLElement;
 
-  //   let checkbox = screen.getByTestId("dateInput") as HTMLElement;
+    fireEvent.click(checkbox, {
+      target: {
+        checked: true,
+      },
+    });
 
-  //   fireEvent.click(checkbox);
+    await waitFor(() => {
+      expect(checkbox).toEqual(true);
+    });
 
-  //   expect(checkbox).toHaveValue(true);
+    fireEvent.click(checkbox, {
+      target: {
+        checked: false,
+      },
+    });
 
-  //   fireEvent.click(checkbox);
-
-  //   expect(checkbox).toHaveValue(false);
-  // });
+    await waitFor(() => {
+      expect(checkbox).toEqual(false);
+    });
+  });
 });
