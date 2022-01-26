@@ -5,6 +5,8 @@ import Button from "antd/lib/button";
 import DatePicker from "antd/lib/date-picker";
 import Checkbox from "antd/lib/checkbox";
 import Select from "antd/lib/select";
+import Radio from "antd/lib/radio";
+import Switch from "antd/lib/switch";
 import styles from "@/pages/index.module.css";
 
 export default function Home() {
@@ -97,13 +99,26 @@ export default function Home() {
             name="selectInput"
             rules={[{ required: true, message: "Please select demo" }]}
           >
-            <Select placeholder="Select demo">
+            <Select placeholder="Select demo" data-testid="selectInput">
               <Select.Option value="demo">Demo</Select.Option>
             </Select>
           </Form.Item>
 
           <Form.Item name="rememberMe" valuePropName="checked">
             <Checkbox data-testid="rememberMe">Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item name="radioGroupInput">
+            <Radio.Group>
+              <Radio value="radioA" data-testid="radioA">radioA</Radio>
+              <Radio value="radioB" data-testid="radioB">radioB</Radio>
+              <Radio value="radioC" data-testid="radioC">radioC</Radio>
+              <Radio value="radioD" data-testid="radioD">radioD</Radio>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item>
+            <Switch data-testid="switchInput" />
           </Form.Item>
 
           <Form.Item>

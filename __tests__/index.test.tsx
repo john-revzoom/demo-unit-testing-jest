@@ -1,9 +1,10 @@
 import {
-  act,
   fireEvent,
   render,
   screen,
   waitFor,
+  prettyDOM,
+  act,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Home from "@/pages/index";
@@ -89,7 +90,7 @@ describe("Home", () => {
 
   it("should be able to display correct toggle state value", async () => {
     render(<Home />);
-    let checkbox = screen.getByTestId("rememberMe") as HTMLElement;
+    let checkbox = screen.getByTestId("rememberMe") as HTMLInputElement;
 
     fireEvent.click(checkbox);
 
@@ -101,6 +102,70 @@ describe("Home", () => {
 
     await waitFor(() => {
       expect(checkbox).not.toBeChecked();
+    });
+  });
+
+  it("select dropdown should be able to change and display selected value", () => {
+    render(<Home />);
+
+    let dropdown = screen.getByRole("combobox") as HTMLInputElement;
+
+    act(() => {
+      fireEvent.click(dropdown, {
+        target: {
+          value: "demo",
+        },
+      });
+    });
+
+    expect(dropdown).toHaveValue("demo");
+  });
+
+  it("radio buttons should be able change and select correct value", () => {
+    render(<Home />);
+
+    let radioA = screen.getByTestId("radioA") as HTMLInputElement;
+
+    console.log(prettyDOM(radioA));
+
+    act(() => {
+      fireEvent.click(radioA, {
+        target: {
+          checked: true,
+        },
+      });
+    });
+
+    expect(radioA).toBeChecked();
+  });
+
+  it("switch should able to change and display toggled input value", async () => {
+    render(<Home />);
+
+    let switchInput = screen.getByTestId("switchInput") as HTMLInputElement;
+
+    act(() => {
+      fireEvent.click(switchInput, {
+        target: {
+          checked: true,
+        },
+      });
+    });
+
+    await waitFor(() => {
+      expect(switchInput).toBeChecked();
+    });
+
+    act(() => {
+      fireEvent.click(switchInput, {
+        target: {
+          checked: false,
+        },
+      });
+    });
+
+    await waitFor(() => {
+      expect(switchInput).not.toBeChecked();
     });
   });
 });
