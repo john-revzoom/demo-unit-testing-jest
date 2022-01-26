@@ -91,24 +91,16 @@ describe("Home", () => {
     render(<Home />);
     let checkbox = screen.getByTestId("rememberMe") as HTMLElement;
 
-    fireEvent.click(checkbox, {
-      target: {
-        checked: true,
-      },
-    });
+    fireEvent.click(checkbox);
 
     await waitFor(() => {
-      expect(checkbox).toEqual(true);
+      expect(checkbox).toBeChecked();
     });
 
-    fireEvent.click(checkbox, {
-      target: {
-        checked: false,
-      },
-    });
+    fireEvent.click(checkbox);
 
     await waitFor(() => {
-      expect(checkbox).toEqual(false);
+      expect(checkbox).not.toBeChecked();
     });
   });
 });
