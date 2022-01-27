@@ -88,6 +88,14 @@ describe("Home", () => {
     userEvent.type(date1Field, "1990-01-01");
   });
 
+  it("should show an error when dateinput is empty", async () => {
+    render(<Home />);
+
+    fireEvent.click(screen.getByTestId("submitFormBtn"));
+
+    await screen.findByText("Date is required.");
+  });
+
   it("should be able to display correct toggle state value", async () => {
     render(<Home />);
     let checkbox = screen.getByTestId("rememberMe") as HTMLInputElement;
@@ -103,6 +111,14 @@ describe("Home", () => {
     await waitFor(() => {
       expect(checkbox).not.toBeChecked();
     });
+  });
+
+  it("should show an error when checkbox is not checked", async () => {
+    render(<Home />);
+
+    fireEvent.click(screen.getByTestId("submitFormBtn"));
+
+    await screen.findByText("This checkbox is required");
   });
 
   it("select dropdown should be able to change and display selected value", () => {
@@ -126,8 +142,6 @@ describe("Home", () => {
 
     let radioA = screen.getByTestId("radioA") as HTMLInputElement;
 
-    console.log(prettyDOM(radioA));
-
     act(() => {
       fireEvent.click(radioA, {
         target: {
@@ -137,6 +151,13 @@ describe("Home", () => {
     });
 
     expect(radioA).toBeChecked();
+  });
+
+  it("should display an error when no radio button is selected", async () => {
+    render(<Home />);
+    fireEvent.click(screen.getByTestId("submitFormBtn"));
+
+    await screen.findByText("Select one option");
   });
 
   it("switch should able to change and display toggled input value", async () => {
@@ -166,6 +187,59 @@ describe("Home", () => {
 
     await waitFor(() => {
       expect(switchInput).not.toBeChecked();
+    });
+  });
+
+  it("should have correct form values on submit", () => {
+    const handleSubmit = jest.fn();
+    render(<Home />);
+
+    let formSubmit = screen.getByTestId("submitBtn");
+    let requiredText = screen.getByTestId("requiredInput") as HTMLInputElement;
+    let requiredNumber = screen.getByTestId(
+      "requiredNumber"
+    ) as HTMLInputElement;
+    let specialCharacter = screen.getByTestId(
+      "requiredSpecialCharacter"
+    ) as HTMLInputElement;
+    let dateInput = screen.getByTestId("dateInput") as HTMLInputElement;
+    let selectInput = screen.getByTestId("selectInput") as HTMLInputElement;
+
+    fireEvent.change(requiredText, {
+      target: {
+        value: "test1",
+      },
+    });
+
+    fireEvent.change(requiredNumber, {
+      target: {
+        value: 123,
+      },
+    });
+
+    fireEvent.change(specialCharacter, {
+      target: {
+        value: "abcd$",
+      },
+    });
+
+    dateInput.setSelectionRange(0, dateInput.value.length);
+    fireEvent.change(dateInput, "2022-01-27");
+
+    fireEvent.change(selectInput, {
+      target: {
+        value: "demo",
+      },
+    });
+
+    fireEvent.click(formSubmit);
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalledWith({
+      requiredText: "test1",
+      requiredNumber: 123,
+      specialCharacter: "abcd$",
+      dateInput: "2022-01-27",
+      selectInput: "demo",
     });
   });
 });

@@ -9,6 +9,8 @@ import Radio from "antd/lib/radio";
 import Switch from "antd/lib/switch";
 import styles from "@/pages/index.module.css";
 
+const { useForm } = Form;
+
 export default function Home() {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
@@ -27,6 +29,7 @@ export default function Home() {
           initialValues={{
             optionalText: "test",
           }}
+          validateTrigger="onSubmit"
         >
           <Form.Item name="optionalText">
             <Input placeholder="Optional text" data-testid="optionalText" />
@@ -41,7 +44,11 @@ export default function Home() {
               },
             ]}
           >
-            <Input placeholder="Required text" data-testid="requiredText" />
+            <Input
+              name="requiredText"
+              placeholder="Required text"
+              data-testid="requiredText"
+            />
           </Form.Item>
 
           <Form.Item
@@ -52,7 +59,7 @@ export default function Home() {
                 message: "Required number must not be empty.",
               },
               {
-                pattern: new RegExp(/^\d{10}$/g),
+                pattern: new RegExp(/^[0-9\b]+$/),
                 message: "Input should only contain numbers",
               },
               {
@@ -61,7 +68,11 @@ export default function Home() {
               },
             ]}
           >
-            <Input placeholder="Required number" data-testid="requiredNumber" />
+            <Input
+              name="requiredNumber"
+              placeholder="Required number"
+              data-testid="requiredNumber"
+            />
           </Form.Item>
 
           <Form.Item
@@ -104,20 +115,53 @@ export default function Home() {
             </Select>
           </Form.Item>
 
-          <Form.Item name="rememberMe" valuePropName="checked">
+          <Form.Item
+            name="rememberMe"
+            valuePropName="checked"
+            rules={[
+              {
+                required: true,
+                message: "This checkbox is required",
+              },
+            ]}
+          >
             <Checkbox data-testid="rememberMe">Remember me</Checkbox>
           </Form.Item>
 
-          <Form.Item name="radioGroupInput">
+          <Form.Item
+            name="radioGroupInput"
+            rules={[
+              {
+                required: true,
+                message: "Select one option",
+              },
+            ]}
+          >
             <Radio.Group>
-              <Radio value="radioA" data-testid="radioA">radioA</Radio>
-              <Radio value="radioB" data-testid="radioB">radioB</Radio>
-              <Radio value="radioC" data-testid="radioC">radioC</Radio>
-              <Radio value="radioD" data-testid="radioD">radioD</Radio>
+              <Radio value="radioA" data-testid="radioA">
+                radioA
+              </Radio>
+              <Radio value="radioB" data-testid="radioB">
+                radioB
+              </Radio>
+              <Radio value="radioC" data-testid="radioC">
+                radioC
+              </Radio>
+              <Radio value="radioD" data-testid="radioD">
+                radioD
+              </Radio>
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item
+            name="switchInput"
+            rules={[
+              {
+                required: true,
+                message: "Please toggle switch",
+              },
+            ]}
+          >
             <Switch data-testid="switchInput" />
           </Form.Item>
 
